@@ -78,26 +78,26 @@ return scrollWidth;
 
 
 // ПОЯВЛЕНИЕ МОДАЛЬНОГО ОКНА ЧЕРЕЗ ОПРЕДЕЛЁННЫЙ ПРОМЕЖУТОК ВРЕМЕНИ
-function showModalByTime(selector, time){
-    setTimeout(function(){
+// function showModalByTime(selector, time){
+//     setTimeout(function(){
 
-        // если открыто хоть одно модально окно, то остальные которые должны были появиться через 3 секунды не будут появляться
-        let display;
-        document.querySelectorAll('[data-modal]').forEach(item => {
-            if(getComputedStyle(item).display !== 'none'){
-                display = 'block'
-            }
-        })
+//         // если открыто хоть одно модально окно, то остальные которые должны были появиться через 3 секунды не будут появляться
+//         let display;
+//         document.querySelectorAll('[data-modal]').forEach(item => {
+//             if(getComputedStyle(item).display !== 'none'){
+//                 display = 'block'
+//             }
+//         })
       
 
-        if(!display){
-            document.querySelector(selector).style.display = 'block';
-            document.body.style.overflow = 'hidden';
-            const scroll = calcScroll();
-            document.body.style.marginRight = `${scroll}px`
-        }
-    }, time);
-}
+//         if(!display){
+//             document.querySelector(selector).style.display = 'block';
+//             document.body.style.overflow = 'hidden';
+//             const scroll = calcScroll();
+//             document.body.style.marginRight = `${scroll}px`
+//         }
+//     }, time);
+// }
 // showModalByTime('.popup-consultation', 3000);
   // если открыто хоть одно модально окно, то остальные которые должны были появиться через 3 секунды не будут появляться
 // ПОЯВЛЕНИЕ МОДАЛЬНОГО ОКНА ЧЕРЕЗ ОПРЕДЕЛЁННЫЙ ПРОМЕЖУТОК ВРЕМЕНИ
@@ -325,12 +325,81 @@ const calc = (size, material, options, promocode, rezult) =>{
         optionslBlock.addEventListener('change', culcFunc);
         promocodeBlock.addEventListener('input', culcFunc);
 }
+
+
+
+// Замена изображений
+const pictureSize = (imgSelector) => {
+    const blocks = document.querySelectorAll(imgSelector);
+
+    function showImg (block){
+        const img = block.querySelector('img');
+        img.src = img.src.slice(0, -4) + ('-1.png');
+        block.querySelectorAll('p:not(.sizes-hit)').forEach(p=>{
+            p.style.display = 'none';
+        })
+    }
+
+    
+    function hideImg (block){
+        const img = block.querySelector('img');
+        img.src = img.src.slice(0, -6) + ('.png');
+        block.querySelectorAll('p:not(.sizes-hit)').forEach(p=>{
+            p.style.display = 'block';
+        })
+    }
+
+    blocks.forEach(block =>{
+        block.addEventListener('mouseover', () => {
+            showImg (block);
+        });
+        block.addEventListener('mouseout', () => {
+            hideImg (block);
+        });
+    });
+}
+
+
+
+
+// Аккардеон
+    const accardion = (triggerSelector) => {
+    const bnts = document.querySelectorAll(triggerSelector);
+        bnts.forEach(btn => {
+            btn.addEventListener('click', function(){
+                this.classList.toggle('active-style');
+                this.nextElementSibling.classList.toggle('active-content');
+                if(this.classList.contains('active-style')){
+                    this.nextElementSibling.style.maxHeight = this.nextElementSibling.scrollHeight + 80 + 'px';
+                }else{
+                    this.nextElementSibling.style.maxHeight = '0px';
+                }
+            });
+        });
+
+
+    // const accardion = (triggerSelector, itemsSelector) => {
+    // blocks = document.querySelectorAll(itemsSelector);
+        // blocks.forEach(block => {
+        //     block.classList.add('animated', 'fadeInDown');
+        // })
+
+        // bnts.forEach(btn => {
+        //     btn.addEventListener('click', function(){
+        //         if(!this.classList.contains('active')){
+        //             bnts.forEach(btn =>{
+        //                 btn.classList.remove('active', 'active-style');
+        //             });
+        //             this.classList.add('active', 'active-style');
+        //         }
+        //     })
+        // })
+}
+
+accardion('.accordion-heading');
+// accardion('.accordion-heading','.accordion-block');
+pictureSize('.sizes-block');
 calc('#size', '#material', '#options', '.promocode', '.calc-price');
-
-
-
-
-
 bundModal('.button-design', '.popup-design', '.popup-design .popup-close');
 bundModal('.button-consultation', '.popup-consultation', '.popup-consultation .popup-close');
 bundModal('.fixed-gift', '.popup-gift', '.popup-gift .popup-close', true);

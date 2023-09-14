@@ -15,7 +15,7 @@ function bundModal(triggerSelector, modalSelector, closeSelector){
             modal.classList.add('show');
             modal.classList.remove('hide');
             document.body.style.overflow = 'hidden';
-            document.body.style.marginRight = `${scroll}px`
+            document.body.style.marginRight = `${scroll}px`;
         })
        
     });
